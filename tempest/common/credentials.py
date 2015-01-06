@@ -15,6 +15,9 @@ from tempest.common import accounts
 from tempest.common import isolated_creds
 from tempest import config
 
+from tempest.openstack.common import log as logging
+LOG = logging.getLogger(__name__)
+
 CONF = config.CONF
 
 
@@ -27,6 +30,11 @@ def get_isolated_credentials(name, network_resources=None,
     # tenant isolation. A new account will be produced only for that test.
     # In case admin credentials are not available for the account creation,
     # the test should be skipped else it would fail.
+    #LOG.debug('CONF.auth.allow_tenant_isolation = %s, CONF.auth.locking_credentials_provider = %s'%CONF.auth.locking_credentials_provider, CONF.auth.locking_credentials_provider)
+    LOG.debug('..............................................')
+    LOG.debug(CONF.auth.allow_tenant_isolation)
+    LOG.debug(CONF.auth.locking_credentials_provider)
+    LOG.debug(name)
     if CONF.auth.allow_tenant_isolation or force_tenant_isolation:
         return isolated_creds.IsolatedCreds(
             name=name,
@@ -36,4 +44,5 @@ def get_isolated_credentials(name, network_resources=None,
             # Most params are not relevant for pre-created accounts
             return accounts.Accounts(name=name)
         else:
+            LOG.debug('====else====')
             return accounts.NotLockingAccounts(name=name)

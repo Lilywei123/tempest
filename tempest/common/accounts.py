@@ -38,6 +38,7 @@ class Accounts(cred_provider.CredentialProvider):
 
     def __init__(self, name):
         super(Accounts, self).__init__(name)
+        LOG.debug('===================Accounts.__init__()==================')
         if os.path.isfile(CONF.auth.test_accounts_file):
             accounts = read_accounts_yaml(CONF.auth.test_accounts_file)
             self.use_default_creds = False

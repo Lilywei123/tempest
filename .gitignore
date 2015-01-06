@@ -18,3 +18,7 @@ build
 .coverage*
 !.coveragerc
 cover/
+.project
+.pydevproject
+etc/bak.*
+

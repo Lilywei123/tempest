@@ -253,10 +253,10 @@ class BaseTestCase(testtools.testcase.WithAttributes,
                   '[%(name)s] %(message)s')
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls):        
         # It should never be overridden by descendants
         if hasattr(super(BaseTestCase, cls), 'setUpClass'):
-            super(BaseTestCase, cls).setUpClass()
+            super(BaseTestCase, cls).setUpClass()        
         cls.setUpClassCalled = True
         # Stack of (name, callable) to be invoked in reverse order at teardown
         cls.teardowns = []
@@ -264,7 +264,7 @@ class BaseTestCase(testtools.testcase.WithAttributes,
         cls.skip_checks()
         try:
             # Allocation of all required credentials and client managers
-            cls.teardowns.append(('credentials', cls.clear_isolated_creds))
+            cls.teardowns.append(('credentials', cls.clear_isolated_creds))            
             cls.setup_credentials()
             # Shortcuts to clients
             cls.setup_clients()
@@ -280,6 +280,7 @@ class BaseTestCase(testtools.testcase.WithAttributes,
                 raise etype, value, trace
             finally:
                 del trace  # to avoid circular refs
+        LOG.debug("==========================test.py->setUpClass() end==========================")
 
     @classmethod
     def tearDownClass(cls):
@@ -362,7 +363,9 @@ class BaseTestCase(testtools.testcase.WithAttributes,
         pass
 
     def setUp(self):
+        LOG.debug("==========================test.py->setUp() start==========================")
         super(BaseTestCase, self).setUp()
+        LOG.debug(self.setUpClassCalled)
         if not self.setUpClassCalled:
             raise RuntimeError("setUpClass does not calls the super's"
                                "setUpClass in the "
@@ -389,6 +392,7 @@ class BaseTestCase(testtools.testcase.WithAttributes,
             self.useFixture(fixtures.LoggerFixture(nuke_handlers=False,
                                                    format=self.log_format,
                                                    level=None))
+        LOG.debug("==========================test.py->setUp() end==========================")
 
     @classmethod
     def get_client_manager(cls, interface=None):

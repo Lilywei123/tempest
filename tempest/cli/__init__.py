@@ -25,6 +25,8 @@ from tempest import exceptions
 from tempest.openstack.common import versionutils
 from tempest import test
 
+from tempest.openstack.common import log as logging
+LOG = logging.getLogger(__name__)
 
 CONF = config.CONF
 
@@ -76,8 +78,17 @@ class ClientTestBase(test.BaseTestCase):
         super(ClientTestBase, cls).resource_setup()
         cls.cred_prov = credentials.get_isolated_credentials(cls.__name__)
         cls.creds = cls.cred_prov.get_admin_creds()
+        '''
+        we can get non-admin user here, haha......
+        '''
+
 
     def _get_clients(self):
+        LOG.debug('self.creds.username = %s'% self.creds.username)
+        LOG.debug('self.creds.password = %s'% self.creds.password)
+        LOG.debug('self.creds.tenant_name = %s'% self.creds.tenant_name)
+        LOG.debug('CONF.identity.uri = %s'% CONF.identity.uri)
+        LOG.debug('CONF.cli.cli_dir = %s'% CONF.cli.cli_dir)
         clients = base.CLIClient(self.creds.username,
                                  self.creds.password,
                                  self.creds.tenant_name,
@@ -89,9 +100,13 @@ class ClientTestBase(test.BaseTestCase):
     # is needed here. The code below should be removed when tempest-lib
     # provides a way to provide this functionality
     def setUp(self):
+        LOG.debug("==========================cli.__init__.py-> setUp() start==========================")
         super(ClientTestBase, self).setUp()
+        LOG.debug("self.client..................")
         self.clients = self._get_clients()
+        LOG.debug("self.parser..................")
         self.parser = output_parser
+        LOG.debug("==========================cli.__init__.py-> setUp() end==========================")
 
     def assertTableStruct(self, items, field_names):
         """Verify that all items has keys listed in field_names.

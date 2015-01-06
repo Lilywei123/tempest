@@ -23,7 +23,6 @@ from tempest.openstack.common import log as logging
 
 CONF = config.CONF
 
-
 LOG = logging.getLogger(__name__)
 
 
@@ -38,6 +37,13 @@ class SimpleReadOnlyKeystoneClientTest(cli.ClientTestBase):
     def keystone(self, *args, **kwargs):
         return self.clients.keystone(*args, **kwargs)
 
+    def test_admin_role_list(self):
+        LOG.debug("==========================start==========================")
+        roles = self.parser.listing(self.keystone('role-list'))
+        self.assertTableStruct(roles, ['id', 'name'])
+
+        
+'''
     def test_admin_fake_action(self):
         self.assertRaises(exceptions.CommandFailed,
                           self.keystone,
@@ -136,3 +142,4 @@ class SimpleReadOnlyKeystoneClientTest(cli.ClientTestBase):
 
     def test_admin_timeout(self):
         self.keystone('catalog', flags='--timeout %d' % CONF.cli.timeout)
+'''

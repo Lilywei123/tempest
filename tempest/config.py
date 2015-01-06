@@ -23,6 +23,8 @@ from oslo.config import cfg
 from tempest.openstack.common import lockutils
 from tempest.openstack.common import log as logging
 
+#output log
+LOG = logging.getLogger(__name__)
 
 def register_opt_group(conf, opt_group, options):
     conf.register_group(opt_group)
@@ -1180,5 +1182,6 @@ class TempestConfigProxy(object):
     def set_config_path(self, path):
         self._path = path
 
-
+LOG.debug('>>>>>>>>>>>>>>>>>>')
 CONF = TempestConfigProxy()
+LOG.debug('<<<<<<<<<<<<<<<<<<')

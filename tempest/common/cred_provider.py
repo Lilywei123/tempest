@@ -27,6 +27,8 @@ LOG = logging.getLogger(__name__)
 class CredentialProvider(object):
     def __init__(self, name, interface='json', password='pass',
                  network_resources=None):
+        LOG.debug('CredentialProvider')
+        LOG.debug(name)
         self.name = name
 
     @abc.abstractmethod
